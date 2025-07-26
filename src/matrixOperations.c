@@ -13,6 +13,15 @@ int isInt(const char* str) {
       return 1; 
 } 
 
+void printM(int size, int mat[size][size]) {
+    for (int row = 0; row < size; row++) {
+        for (int col = 0; col < size; col++) {
+            printf("%d ", mat[row][col]);
+        }
+        printf("\n");
+    }
+}
+
 char * readTheTerminal(void) {
       char * line = malloc(100), * linep = line; 
       size_t  lenmax = 100, len = lenmax; 
@@ -41,8 +50,7 @@ char * readTheTerminal(void) {
 }
 
 void addM( int m1S,int m1[m1S][m1S]) { 
-
-      printf("Note* determinant (for 2x2 ONLY)\n enter the size of matrix two : "); 
+      printf("Enter Matrix 2 size : "); 
       char* m2Size= readTheTerminal(); 
       if(!isInt(m2Size)) { 
             printf("ERROR: incorrect value type entered");       
@@ -57,7 +65,54 @@ void addM( int m1S,int m1[m1S][m1S]) {
             free(m2Size); 
             return; 
       }
-            //fill the second matrix 
+      //fill the second matrix 
+      for(int row = 0; row < m1S ; row++) {
+            for(int col = 0; col < m1S; col++) {
+                  printf("enter value for row: %d, col: %d :", row, col); 
+                  char* val = readTheTerminal(); 
+                  if(!isInt(val)) { 
+                        printf("ERROR: incorrect value type entered");       
+                        return; 
+                  } 
+                  const int v = atoi(val); 
+                  free(val);
+                  m2[row][col] = v;
+            }
+      }
+      printf("M1: \n"); 
+      printM(m1S, m1); 
+      printf("M2: \n"); 
+      printM(m2S, m2); 
+      printf("operation addition"); 
+      for(int row = 0; row < m2S ; row++) {
+            for(int col = 0; col < m2S; col++) {
+                  m1[row][col] = m2[row][col] + m1[row][col];
+                  printf("%d ", m1[row][col]);
+            }
+            printf("\n"); // New line per row
+      }
+
+
+
+ }
+void multM(int m1S,int m1[m1S][m1S]) { 
+      
+      printf("Enter Matrix 2 size : "); 
+      char* m2Size= readTheTerminal(); 
+      if(!isInt(m2Size)) { 
+            printf("ERROR: incorrect value type entered");       
+            return; 
+      } 
+      const int m2S = atoi(m2Size); 
+      printf("Matrix two is : %dx%d\n", m2S ,m2S); 
+      int m2[m2S][m2S]; 
+
+      if(m2S != m1S){ 
+            printf("M1 cols != M2 rows cannot multiply matricies"); 
+            free(m2Size); 
+            return; 
+      }
+      //fill the second matrix 
       for(int row = 0; row < m1S ; row++) {
             for(int col = 0; col < m1S; col++) {
                   printf("enter value for row: %d, col: %d :", row, col); 
@@ -72,22 +127,30 @@ void addM( int m1S,int m1[m1S][m1S]) {
             }
       }
 
-      printf("M1 + M2 = \n"); 
+      printf("M1: \n"); 
+      printM(m1S, m1); 
+      printf("M2: \n"); 
+      printM(m2S, m2); 
+      printf("operation multiplication"); 
 
-      for(int row = 0; row < m2S ; row++) {
-            for(int col = 0; col < m2S; col++) {
-                  m1[row][col] = m2[row][col] + m1[row][col];
-                  printf("%d ", m1[row][col]);
+      int result[m1S][m2S];
+
+      //calculate multiplaction and print
+      for (int i = 0; i < m1S; i++) {
+            for (int j = 0; j < m2S; j++) {
+                  result[i][j] = 0;
+                  for (int k = 0; k < m1S; k++) {
+                  result[i][j] += m1[i][k] * m2[k][j];
+                  }
             }
-            printf("\n"); // New line per row
       }
 
-
-
- }
-void multM() { printf("MULTIPLY\n"); }
-void transM() { printf("TRANSPOSE\n"); }
-void detM() { printf("DETERMINANT\n"); }
+      printf("M1 * M2 =\n");
+      printM(m1S, result);
+      
+}
+void transM(int m1S,int m1[m1S][m1S]) { printf("TRANSPOSE\n"); }
+void detM(int m1S,int m1[m1S][m1S]) { printf("DETERMINANT\n"); }
 
 
 
@@ -140,10 +203,10 @@ int main() {
                   break;
 
             case(2) :
-                  multM();
+                  multM(m1S,m1);
                   break;
             case(3) : 
-                  transM();
+                  transM(m1S,m1);
                   break;
             
             case (4) : 
@@ -151,7 +214,7 @@ int main() {
                         printf("Unkown determinant size must be 2x2 for this operation\n"); 
                         break; 
                   }
-                  detM();
+                  detM(m1S,m1);
                   break; 
             default: 
                   printf("Unknown operation: %s\n", operation);
