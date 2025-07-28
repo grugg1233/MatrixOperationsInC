@@ -152,14 +152,14 @@ void transM(int m1S,int m1[m1S][m1S]) {
       printf("Transpose of the matrix : \n"); 
       printM(m1S, m1);
       printf("is : \n"); 
-
+      int temp[m1S][m1S];
       for(int i = 0; i < m1S; i++) {
             for(int j = 0; j < m1S; j++) {
-                  m1[i][j] = m1[j][i]; 
+                  temp[i][j] = m1[j][i]; 
             }
       }
       printf("M1^T =\n");
-      printM(m1S, m1);
+      printM(m1S, temp);
       
 
  }
@@ -252,7 +252,9 @@ int main() {
                   else {
                         printf("incorrect input type please enter (y/n)");  
                   }
+                  free(user);
             }
+
 
       }
 
