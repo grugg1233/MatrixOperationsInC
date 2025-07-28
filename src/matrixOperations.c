@@ -155,9 +155,12 @@ void transM(int m1S,int m1[m1S][m1S]) {
 
       for(int i = 0; i < m1S; i++) {
             for(int j = 0; j < m1S; j++) {
-
+                  m1[i][j] = m1[j][i]; 
             }
       }
+      printf("M1^T =\n");
+      printM(m1S, m1);
+      
 
  }
 void detM(int m1S,int m1[m1S][m1S]) { printf("DETERMINANT\n"); }
