@@ -1,5 +1,3 @@
-//Matrix operations add, multiply, transpose, determinant (for 2x2 or 3x3).
-
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <string.h>
@@ -83,7 +81,7 @@ void addM( int m1S,int m1[m1S][m1S]) {
       printM(m1S, m1); 
       printf("M2: \n"); 
       printM(m2S, m2); 
-      printf("operation addition"); 
+      printf("operation addition : \n"); 
       for(int row = 0; row < m2S ; row++) {
             for(int col = 0; col < m2S; col++) {
                   m1[row][col] = m2[row][col] + m1[row][col];
@@ -149,82 +147,112 @@ void multM(int m1S,int m1[m1S][m1S]) {
       printM(m1S, result);
       
 }
-void transM(int m1S,int m1[m1S][m1S]) { printf("TRANSPOSE\n"); }
+void transM(int m1S,int m1[m1S][m1S]) { 
+            
+      printf("Transpose of the matrix : \n"); 
+      printM(m1S, m1);
+      printf("is : \n"); 
+
+      for(int i = 0; i < m1S; i++) {
+            for(int j = 0; j < m1S; j++) {
+
+            }
+      }
+
+ }
 void detM(int m1S,int m1[m1S][m1S]) { printf("DETERMINANT\n"); }
 
 
 
 int main() {
-
-
-
-//logic for getting matrix size from terminal 
-      printf("Note* determinant (for 2x2 ONLY)\n enter the size of matrix one : "); 
-      char* m1Size= readTheTerminal(); 
-      if(!isInt(m1Size)) { 
-            printf("ERROR: incorrect value type entered");       
-            return 1;
-      } 
-      const int m1S = atoi(m1Size); 
-      printf("Matrix one is : %dx%d\n", m1S ,m1S); 
-      int m1[m1S][m1S]; 
-      
-      //fill the first matrix 
-      for(int row = 0; row < m1S ; row++) {
-            for(int col = 0; col < m1S; col++) {
-            printf("enter value for row: %d, col: %d :", row, col); 
-            char* val= readTheTerminal(); 
-            if(!isInt(val)) { 
+      int calculate = 1; 
+      while (calculate == 1){
+      //logic for getting matrix size from terminal 
+            printf("Note* determinant (for 2x2 ONLY)\n enter the size of matrix one : "); 
+            char* m1Size= readTheTerminal(); 
+            if(!isInt(m1Size)) { 
                   printf("ERROR: incorrect value type entered");       
                   return 1;
             } 
-            const int v = atoi(val); 
-            free(val); 
-                m1[row][col] = v;
-            }
-      }
-
-
-//operation
-
-      printf("Select operation (add (1) , multiply (2), transpose (3), determinant (4) (for 2x2 ONLY)) type in lower case: ");
-      char* operation= readTheTerminal(); 
-      if(!isInt(operation)) { 
-            printf("ERROR: incorrect value type entered");       
-            return 1;
-      } 
-      int op = atoi(operation); 
-      printf("Matrix operation is : "); 
-
-      
-      switch(op){
-            case(1): 
-                  addM( m1S,m1);
-                  break;
-
-            case(2) :
-                  multM(m1S,m1);
-                  break;
-            case(3) : 
-                  transM(m1S,m1);
-                  break;
+            const int m1S = atoi(m1Size); 
+            printf("Matrix one is : %dx%d\n", m1S ,m1S); 
+            int m1[m1S][m1S]; 
             
-            case (4) : 
-                  if(op == 4 && m1S != 2) {
-                        printf("Unkown determinant size must be 2x2 for this operation\n"); 
+            //fill the first matrix 
+            for(int row = 0; row < m1S ; row++) {
+                  for(int col = 0; col < m1S; col++) {
+                  printf("enter value for row: %d, col: %d :", row, col); 
+                  char* val= readTheTerminal(); 
+                  if(!isInt(val)) { 
+                        printf("ERROR: incorrect value type entered");       
+                        return 1;
+                  } 
+                  const int v = atoi(val); 
+                  free(val); 
+                  m1[row][col] = v;
+                  }
+            }
+
+
+      //operation
+
+            printf("Select operation (add (1) , multiply (2), transpose (3), determinant (4) (for 2x2 ONLY)) type in lower case: ");
+            char* operation= readTheTerminal(); 
+            if(!isInt(operation)) { 
+                  printf("ERROR: incorrect value type entered");       
+                  return 1;
+            } 
+            int op = atoi(operation); 
+            printf("Matrix operation is : "); 
+
+            
+            switch(op){
+                  case(1): 
+                        addM( m1S,m1);
+                        break;
+
+                  case(2) :
+                        multM(m1S,m1);
+                        break;
+                  case(3) : 
+                        transM(m1S,m1);
+                        break;
+                  
+                  case (4) : 
+                        if(op == 4 && m1S != 2) {
+                              printf("Unkown determinant size must be 2x2 for this operation\n"); 
+                              break; 
+                        }
+                        detM(m1S,m1);
+                        break; 
+                  default: 
+                        printf("Unknown operation: %s\n", operation);
+            
+
+            }
+
+            
+            //delete the value sent by the user
+            free(m1Size); 
+            free(operation);
+
+            int incorrectinput = 1; 
+            while(incorrectinput)
+            {
+                  printf("Calculate another matrix? (y/n)?"); 
+                  char* user = readTheTerminal();  
+                  if (*user == 'n' || *user == 'N') {
+                        calculate = 0; 
                         break; 
                   }
-                  detM(m1S,m1);
-                  break; 
-            default: 
-                  printf("Unknown operation: %s\n", operation);
-      
+                  else if (*user == 'y' || *user == 'Y') break; 
+                  else {
+                        printf("incorrect input type please enter (y/n)");  
+                  }
+            }
 
       }
-      
-      //delete the value sent by the user
-      free(m1Size); 
-      free(operation);
+
       return 0; 
       
 
